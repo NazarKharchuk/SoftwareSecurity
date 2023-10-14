@@ -1,0 +1,302 @@
+{
+	"info": {
+		"_postman_id": "811587aa-c60d-4133-9896-344bc1730e2f",
+		"name": "ThirdLab",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24822720"
+	},
+	"item": [
+		{
+			"name": "authorize",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"name": "cookie",
+						"sortOrder": 1,
+						"infoTitle": "This header was automatically added",
+						"info": "The Cookie header is added to send the cookies that are associated with this endpoint.\n\nUse the cookie manager to remove the header or to change the value.",
+						"allowedToToggle": false,
+						"disableEdit": true,
+						"previewSettingsLink": "Go to cookies",
+						"key": "Cookie",
+						"value": "did=s%3Av0%3Aa20f6bb0-5d3a-11ee-a5ea-c1a9b157909b.U6AiY32ZreJ%2FZbEPnirhX1v68%2FCKBbwet6TesstE9J0; did_compat=s%3Av0%3Aa20f6bb0-5d3a-11ee-a5ea-c1a9b157909b.U6AiY32ZreJ%2FZbEPnirhX1v68%2FCKBbwet6TesstE9J0; auth0=s%3Av1.gadzZXNzaW9ugqZoYW5kbGXEQDZIpQe6yklBeKRDBwropjA6APxinn-iCa5Vtvmgz_kGGUU0PzgDQHhXe_tN5AixJU2JogvhDS2efTuY2ibwEOamY29va2llg6dleHBpcmVz1_8DGXUAZSlM265vcmlnaW5hbE1heEFnZc4PcxQAqHNhbWVTaXRlpG5vbmU.87%2FwBeNGnXp80hIaLwPaH9HbqFWV9CKGKLxLLW34Sgw; auth0_compat=s%3Av1.gadzZXNzaW9ugqZoYW5kbGXEQDZIpQe6yklBeKRDBwropjA6APxinn-iCa5Vtvmgz_kGGUU0PzgDQHhXe_tN5AixJU2JogvhDS2efTuY2ibwEOamY29va2llg6dleHBpcmVz1_8DGXUAZSlM265vcmlnaW5hbE1heEFnZc4PcxQAqHNhbWVTaXRlpG5vbmU.87%2FwBeNGnXp80hIaLwPaH9HbqFWV9CKGKLxLLW34Sgw",
+						"system": true,
+						"type": "text"
+					},
+					{
+						"name": "cache-control",
+						"sortOrder": 2,
+						"infoTitle": "We recommend using this header",
+						"info": "Postman added \"Cache-Control: no-cache\" as a precautionary measure to prevent the server from returning stale response when one makes repeated requests.\n\nYou can remove this header in the app settings or enter a new one with a different value.",
+						"allowedToToggle": false,
+						"disableEdit": true,
+						"previewSettingsLink": "Go to settings",
+						"key": "Cache-Control",
+						"value": "no-cache",
+						"system": true,
+						"type": "text"
+					},
+					{
+						"name": "postman-token",
+						"sortOrder": 3,
+						"infoTitle": "We recommend using this header",
+						"info": "The Postman-Token header appends a random UUID to every outgoing request. Postman adds this header for API developers to better debug requests sent and to ensure separate requests appear distinct to the receiving server.\n\nYou can remove this header in the app settings.",
+						"allowedToToggle": false,
+						"disableEdit": true,
+						"previewSettingsLink": "Go to settings",
+						"key": "Postman-Token",
+						"value": "<calculated when request is sent>",
+						"system": true,
+						"type": "text"
+					},
+					{
+						"name": "host",
+						"sortOrder": 6,
+						"infoTitle": "We recommend using this header",
+						"info": "The Host header is added to identify the domain name for which a request is being sent to the server. This header is implicitly sent by every HTTP client.\n\nYou can remove the header or enter a new one with a different value. It is most likely that without this header, your request will return an HTTP 400 error.",
+						"allowedToToggle": true,
+						"disableEdit": true,
+						"key": "Host",
+						"value": "<calculated when request is sent>",
+						"system": true,
+						"type": "text"
+					},
+					{
+						"name": "user-agent",
+						"sortOrder": 7,
+						"infoTitle": "We recommend using this header",
+						"info": "The User-Agent header is added to help the server identify Postman as the HTTP requesting application or client.\n\nIt is recommended that this header be sent, but you can remove the header or enter a new one with a different value.",
+						"allowedToToggle": true,
+						"disableEdit": true,
+						"key": "User-Agent",
+						"value": "PostmanRuntime/7.32.1",
+						"system": true,
+						"type": "text"
+					},
+					{
+						"name": "accept",
+						"sortOrder": 8,
+						"infoTitle": "We recommend using this header",
+						"info": "The \"Accept: */*\" header is added to tell the server that Postman can understand and process all forms of response content types.\n\nIt is recommended that this header be sent, but you can remove the header or enter a new one with a different value.",
+						"allowedToToggle": true,
+						"disableEdit": true,
+						"key": "Accept",
+						"value": "*/*",
+						"system": true,
+						"type": "text"
+					},
+					{
+						"name": "accept-encoding",
+						"sortOrder": 9,
+						"infoTitle": "We recommend using this header",
+						"info": "The Accept-Encoding header is added to indicate to the server that Postman HTTP client supports a defined list of content-encoding or compression algorithms as response.\n\nYou can remove the header or enter a new one with a different value. Doing that may not accurately render the response within the app.",
+						"allowedToToggle": true,
+						"disableEdit": true,
+						"key": "Accept-Encoding",
+						"value": "gzip, deflate, br",
+						"system": true,
+						"type": "text"
+					},
+					{
+						"name": "connection",
+						"sortOrder": 10,
+						"infoTitle": "We recommend using this header",
+						"info": "Postman added the Connection header to indicate the server to keep the underlying network connection open once the current response is received. This allows Postman to reuse the same connection for faster response times in subsequent requests to the same server.\n\nYou can remove this header or enter a new one with a different value, such as `Connection: Close` to control this behaviour.",
+						"allowedToToggle": true,
+						"disableEdit": true,
+						"key": "Connection",
+						"value": "keep-alive",
+						"system": true,
+						"type": "text"
+					},
+					{
+						"key": "Content_Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text",
+						"id": 0
+					}
+				],
+				"url": {
+					"raw": "https://dev-sayk782uxiasmtdz.us.auth0.com/authorize?response_type=code&client_id=gdqjTYVIJLYOHdZQYQlMYEwwb6stSvCj&scope=offline_access&redirect_uri=http://localhost:3000",
+					"protocol": "https",
+					"host": [
+						"dev-sayk782uxiasmtdz",
+						"us",
+						"auth0",
+						"com"
+					],
+					"path": [
+						"authorize"
+					],
+					"query": [
+						{
+							"key": "response_type",
+							"value": "code"
+						},
+						{
+							"key": "client_id",
+							"value": "gdqjTYVIJLYOHdZQYQlMYEwwb6stSvCj"
+						},
+						{
+							"key": "scope",
+							"value": "offline_access"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost:3000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "audience",
+							"value": "https://dev-sayk782uxiasmtdz.us.auth0.com/api/v2/",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "gdqjTYVIJLYOHdZQYQlMYEwwb6stSvCj",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "J0Nx-fjJNaUbfaYst_GqiDbiNM760C34BXImtIiCFt8AzKYADgWFzh8rBg-OrCDE",
+							"type": "text"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost:3000",
+							"type": "text"
+						},
+						{
+							"key": "code",
+							"value": "26vJnwaMG_cE1T9RcxgkLzmTPZOqMMYNl4rk1De3aWXjD",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://dev-sayk782uxiasmtdz.us.auth0.com/oauth/token",
+					"protocol": "https",
+					"host": [
+						"dev-sayk782uxiasmtdz",
+						"us",
+						"auth0",
+						"com"
+					],
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "refresh token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "refresh_token",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "gdqjTYVIJLYOHdZQYQlMYEwwb6stSvCj",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "J0Nx-fjJNaUbfaYst_GqiDbiNM760C34BXImtIiCFt8AzKYADgWFzh8rBg-OrCDE",
+							"type": "text"
+						},
+						{
+							"key": "refresh_token",
+							"value": "ct9NXfKwIduYXV6T-kt81BTtUiXv_rIyoLN6xPidsE_qU",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://dev-sayk782uxiasmtdz.us.auth0.com/oauth/token",
+					"protocol": "https",
+					"host": [
+						"dev-sayk782uxiasmtdz",
+						"us",
+						"auth0",
+						"com"
+					],
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "change password",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlM4Vi1QVGFnOUl0bFE5NlVUQzZxUiJ9.eyJpc3MiOiJodHRwczovL2Rldi1zYXlrNzgydXhpYXNtdGR6LnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJnZHFqVFlWSUpMWU9IZFpRWVFsTVlFd3diNnN0U3ZDakBjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9kZXYtc2F5azc4MnV4aWFzbXRkei51cy5hdXRoMC5jb20vYXBpL3YyLyIsImlhdCI6MTY5NzMwOTMzOCwiZXhwIjoxNjk3Mzk1NzM4LCJhenAiOiJnZHFqVFlWSUpMWU9IZFpRWVFsTVlFd3diNnN0U3ZDaiIsInNjb3BlIjoicmVhZDp1c2VycyB1cGRhdGU6dXNlcnMgZGVsZXRlOnVzZXJzIGNyZWF0ZTp1c2VycyIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.lY0s2LhZyuDE9mG_CSjR0MPijWVCiN3Be8g20L5s_2KqdUYV0xckB7KCbCOQo59rN0ObX2VCTZOQJ-QHPgzTn0tY2YoZCDqxCzwYR124jBYfvxRusWd4NSTRjTTCa7KVbP0cTKauP348gwXIRtw5JBcf_K9KfzcRFaSdbDLwCnrEgQtCe0mBvffizLWCiWGO58CAF0wgntF0NjI7GvHPxlMRjyYobN2aVWsNddiz2sOBhMQiJVP_7eFmn_eQZKUDa_bBtLRaJIABQC61oibxX-bA4LlZm8CO5ji-D8o7Mv8UoZZJQwh16dR6LBfz5BoPythvW1q5URgEB_kpfQY5UQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"connection\": \"Username-Password-Authentication\",\r\n    \"password\": \"MyPassword123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://dev-sayk782uxiasmtdz.us.auth0.com/api/v2/users/auth0|652558f23d98ecce865a86d3",
+					"protocol": "https",
+					"host": [
+						"dev-sayk782uxiasmtdz",
+						"us",
+						"auth0",
+						"com"
+					],
+					"path": [
+						"api",
+						"v2",
+						"users",
+						"auth0|652558f23d98ecce865a86d3"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
