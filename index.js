@@ -2,15 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const port = 3000;
-const axios = require('axios');
-const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa');
+const { auth } = require('express-openid-connect');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-const SESSION_KEY = 'Authorization';
 
 const MY_DOMAIN = 'dev-sayk782uxiasmtdz.us.auth0.com';
 const MY_CLIENT_ID = 'cS6lWiWjXnDYYMFk8qhYUxc6g3ZXQ2T0';
@@ -27,133 +24,32 @@ const getKey = (header, callback) => {
     });
 };
 
-app.use((req, res, next) => {
-    if (req.path === '/api/token/refresh') {
-        return next();
-    }
-
-    let access_token = req.get(SESSION_KEY);
-    console.log("token: " + access_token);
-
-    if (access_token !== undefined) {
-        jwt.verify(access_token, getKey, (err, decoded) => {
-            if (err) {
-                if (err instanceof jwt.TokenExpiredError) {
-                    return res.status(426).json({ message: 'Токен закінчився' });
-                } else {
-                    return res.status(401).json({ message: 'Неправильний токен' });
-                }
-            }
-
-            const currentTime = Math.floor(Date.now() / 1000);
-            console.log("Time: " + (decoded.exp - currentTime));
-            if (decoded.exp - currentTime <= 30) {
-                return res.status(426).json({ message: 'Токен близький до закінчення' });
-            }
-            console.log(decoded);
-            req.user = { userID: decoded.sub };
-            next();
-        });
-    } else {
-        next();
-    }
-});
+app.use(auth({
+    baseURL: `http://localhost:${port}`,
+    clientID: MY_CLIENT_ID,
+    secret: MY_CLIENT_SECRET,
+    authRequired: true,
+    auth0Logout: true,
+    issuerBaseURL: `https://${MY_DOMAIN}`,
+    logoutParams: {
+        returnTo: `http://localhost:${port}/logout`,
+    },
+}));
 
 app.get('/', (req, res) => {
-    if (req.user) {
-        return res.json({
-            userID: req.user.userID,
-            logout: 'http://localhost:3000/logout'
-        })
-    }
     res.sendFile(path.join(__dirname + '/index.html'));
 })
 
-app.post('/api/login', (req, res) => {
-    const { login, password } = req.body;
-
-    axios
-        .post(`https://${MY_DOMAIN}/oauth/token`, {
-            grant_type: 'password',
-            username: login,
-            password: password,
-            audience: `https://${MY_DOMAIN}/api/v2/`,
-            client_id: MY_CLIENT_ID,
-            client_secret: MY_CLIENT_SECRET,
-            scope: 'offline_access'
+app.get('/data', (req, res) => {
+    if (req.oidc.isAuthenticated()) {
+        res.json({
+            userID: req.oidc.user.sub,
+            logout: 'http://localhost:3000/logout'
         })
-        .then((response) => {
-            const accessToken = response.data.access_token;
-            const refreshToken = response.data.refresh_token;
-            console.log('Access Token:', accessToken);
-            console.log('Refresh Token:', refreshToken);
-
-            res.json({ access_token: accessToken, refresh_token: refreshToken }).send();
-        })
-        .catch((error) => {
-            res.status(401).send();
-        });
-});
-
-app.post('/api/token/refresh', (req, res) => {
-    const { refresh_token } = req.body;
-
-    axios
-        .post(`https://${MY_DOMAIN}/oauth/token`, {
-            grant_type: 'refresh_token',
-            refresh_token,
-            client_id: MY_CLIENT_ID,
-            client_secret: MY_CLIENT_SECRET,
-        })
-        .then((response) => {
-            const access_token = response.data.access_token;
-
-            console.log(`New access_token: ${access_token};`);
-
-            res.json({ access_token }).send();
-        })
-        .catch((error) => {
-            res.status(401).send();
-        });
-});
-
-app.post('/api/register', (req, res) => {
-    const { login, password } = req.body;
-
-    var token;
-
-    axios
-        .post(`https://${MY_DOMAIN}/oauth/token`, {
-            grant_type: 'client_credentials',
-            audience: `https://${MY_DOMAIN}/api/v2/`,
-            client_id: MY_CLIENT_ID,
-            client_secret: MY_CLIENT_SECRET
-        })
-        .then((response) => {
-            token = response.data.access_token;
-
-            axios
-                .post(`https://${MY_DOMAIN}/api/v2/users`, {
-                    email: login,
-                    password: password,
-                    connection: "Username-Password-Authentication"
-                }, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                .then((response) => {
-                    res.status(201).send();
-                })
-                .catch((error) => {
-                    console.log(error);
-                    res.status(401).json({ message: error.message });
-                });
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-});
+    } else {
+        res.status(401).send();
+    }
+})
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

@@ -10,34 +10,15 @@
 
 <body>
     <main id="main-holder">
+        <div id="msg-holder">
+            <p id="msg"></p>
+        </div>
+
         <a href="/logout" id="logout">Logout</a>
 
-        <h1 id="login-header">Login</h1>
-
-        <div id="login-error-msg-holder">
-            <p id="login-error-msg">Invalid username <span id="error-msg-second-line">and/or password</span></p>
+        <div id="error-msg-holder">
+            <p id="error-msg">Недоступно неавторизованим користувачам</p>
         </div>
-
-        <form id="login-form" action="/api/login" method="post">
-            <input type="text" name="login" id="username-field" class="login-form-field" placeholder="Username">
-            <input type="password" name="password" id="password-field" class="login-form-field" placeholder="Password">
-            <input type="submit" value="Login" id="login-form-submit">
-        </form>
-
-        <h1 id="register-header">Register</h1>
-
-        <div id="register-error-msg-holder">
-            <p id="register-error-msg">Register error</p>
-        </div>
-
-        <form id="register-form" action="/api/register" method="post">
-            <input type="text" name="login" id="register-username-field" class="register-form-field"
-                placeholder="Username">
-            <input type="password" name="password" id="register-password-field" class="register-form-field"
-                placeholder="Password">
-            <input type="submit" value="Register" id="register-form-submit">
-        </form>
-
     </main>
 </body>
 
@@ -57,10 +38,6 @@
         background-color: #3a3a3a;
     }
 
-    #logout {
-        opacity: 0;
-    }
-
     #main-holder {
         width: 50%;
         height: 70%;
@@ -72,8 +49,7 @@
         box-shadow: 0px 0px 5px 2px black;
     }
 
-    #login-error-msg-holder,
-    #register-error-msg-holder {
+    #error-msg-holder {
         width: 100%;
         height: 100%;
         display: grid;
@@ -81,8 +57,7 @@
         align-items: center;
     }
 
-    #login-error-msg,
-    #register-error-msg {
+    #error-msg {
         width: 23%;
         text-align: center;
         margin: 0;
@@ -94,161 +69,28 @@
         background-color: #e58f8f;
         opacity: 0;
     }
-
-    #error-msg-second-line {
-        display: block;
-    }
-
-    #login-form,
-    #register-form {
-        align-self: flex-start;
-        display: grid;
-        justify-items: center;
-        align-items: center;
-    }
-
-    .login-form-field::placeholder,
-    .register-form-field::placeholder {
-        color: #3a3a3a;
-    }
-
-    .login-form-field,
-    .register-form-field {
-        border: none;
-        border-bottom: 1px solid #3a3a3a;
-        margin-bottom: 10px;
-        border-radius: 3px;
-        outline: none;
-        padding: 0px 0px 5px 5px;
-    }
-
-    #login-form-submit,
-    #register-form-submit {
-        width: 100%;
-        padding: 7px;
-        border: none;
-        border-radius: 5px;
-        color: white;
-        font-weight: bold;
-        background-color: #3a3a3a;
-        cursor: pointer;
-        outline: none;
-    }
 </style>
 
 <script>
-    let access_token;
-    let refresh_token;
+    axios({
+        method: 'get',
+        url: '/data'
+    }).then((response) => {
+        const { userID } = response.data;
 
-    try {
-        access_token = localStorage.getItem("access_token");
-        refresh_token = localStorage.getItem("refresh_token");
-    } catch (e) { console.log("Token error: " + e); }
+        if (userID) {
+            const errorMsgHolder = document.getElementById('error-msg-holder');
+            errorMsgHolder.remove();
 
-    if (access_token) {
-        axios.get('/', {
-            headers: {
-                Authorization: access_token
-            }
-        })
-        axios({
-            method: 'get',
-            url: '/',
-            headers: {
-                'Authorization': access_token
-            }
-        }).then((response) => {
-            const { userID } = response.data;
+            document.getElementById('msg').textContent = `UserID: ${userID}`;
+        }
+    }).catch((e) => {
+        const logoutLink = document.getElementById('logout');
+        const msgHolder = document.getElementById('msg-holder');
 
-            if (userID) {
-                const mainHolder = document.getElementById("main-holder");
-                const loginHeader = document.getElementById("login-header");
-                const registerHeader = document.getElementById("register-header");
-
-                loginForm.remove();
-                loginErrorMsg.remove();
-                loginHeader.remove();
-                registerForm.remove();
-                registerErrorMsg.remove();
-                registerHeader.remove();
-
-                mainHolder.append(`Hello ${userID}`);
-                logoutLink.style.opacity = 1;
-            }
-        }).catch((e) => {
-            if (e.response.status === 426) {
-                axios.post('/api/token/refresh', { refresh_token })
-                    .then((response) => {
-                        localStorage.setItem('access_token', response.data.access_token);
-                        location.reload();
-                    })
-                    .catch((error) => {
-                        console.log("Token refresh error: " + error);
-                    });
-            } else {
-                console.log("Error: " + e);
-            }
-        });
-    }
-
-
-    const loginForm = document.getElementById("login-form");
-    const loginButton = document.getElementById("login-form-submit");
-    const loginErrorMsg = document.getElementById("login-error-msg");
-    const registerForm = document.getElementById("register-form");
-    const registerButton = document.getElementById("register-form-submit");
-    const registerErrorMsg = document.getElementById("register-error-msg");
-    const logoutLink = document.getElementById("logout");
-
-    logoutLink.addEventListener("click", (e) => {
-        e.preventDefault();
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
-        location.reload();
+        logoutLink.remove();
+        msgHolder.remove();
     });
-
-    loginButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        const login = loginForm.login.value;
-        const password = loginForm.password.value;
-
-        axios({
-            method: 'post',
-            url: '/api/login',
-            data: {
-                login,
-                password
-            }
-        }).then((response) => {
-            localStorage.setItem('access_token', response.data.access_token);
-            localStorage.setItem('refresh_token', response.data.refresh_token);
-            location.reload();
-        }).catch((response) => {
-            loginErrorMsg.style.opacity = 1;
-        });
-    })
-
-    registerButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        const login = registerForm.login.value;
-        const password = registerForm.password.value;
-
-        axios({
-            method: 'post',
-            url: '/api/register',
-            data: {
-                login,
-                password
-            }
-        }).then((response) => {
-            registerForm.login.value = "";
-            registerForm.password.value = "";
-            location.reload();
-        }).catch((error) => {
-            registerErrorMsg.innerText = error;
-            registerErrorMsg.style.opacity = 1;
-        });
-    })
 </script>
 
 </html>
