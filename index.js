@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const port = 3000;
-const jwksClient = require('jwks-rsa');
 const { auth } = require('express-openid-connect');
 
 const app = express();
@@ -12,17 +11,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const MY_DOMAIN = 'dev-sayk782uxiasmtdz.us.auth0.com';
 const MY_CLIENT_ID = 'cS6lWiWjXnDYYMFk8qhYUxc6g3ZXQ2T0';
 const MY_CLIENT_SECRET = '9z5iq-IFxPvUqw_iP9Jw_t8Byjc4AZkIV3qyjevVbXX4bWpahg5f3D5QXz3huxC3';
-
-const client = jwksClient({
-    jwksUri: `https://${MY_DOMAIN}/.well-known/jwks.json`,
-});
-
-const getKey = (header, callback) => {
-    client.getSigningKey(header.kid, (err, key) => {
-        const signingKey = key.publicKey || key.rsaPublicKey;
-        callback(null, signingKey);
-    });
-};
 
 app.use(auth({
     baseURL: `http://localhost:${port}`,
